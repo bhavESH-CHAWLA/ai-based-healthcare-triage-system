@@ -1,0 +1,37 @@
+                 ┌─────────────────────┐
+                 │     Patient UI      │
+                 │   (React Frontend)  │
+                 └─────────┬───────────┘
+                           │
+                 ┌─────────▼───────────┐
+                 │     Doctor UI       │
+                 │   (React Frontend)  │
+                 └─────────┬───────────┘
+                           │
+                 ┌─────────▼───────────┐
+                 │     Admin UI        │
+                 │   (React Frontend)  │
+                 └─────────┬───────────┘
+                           │
+                   HTTPS / REST APIs
+                           │
+            ┌────────────────▼────────────────┐
+            │        Backend Server           │
+            │   (Node.js + Express.js)        │
+            │                                │
+            │  • Authentication (JWT)        │
+            │  • Appointment Management      │
+            │  • Symptom Processing Logic    │
+            │  • Role Based Access Control   │
+            └───────────────┬────────────────┘
+                            │
+          ┌─────────────────┼─────────────────┐
+          │                                   │
+┌─────────▼─────────┐              ┌─────────▼─────────┐
+│     MongoDB       │              │      AI APIs       │
+│  (Main Database)  │              │ (OpenAI / Infermedica)
+│                   │              │                   │
+│ • Users           │              │ • Symptom analysis│
+│ • Appointments    │              │ • Severity score  │
+│ • Medical History │              │ • Explanation     │
+└───────────────────┘              └───────────────────┘
