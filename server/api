@@ -1,0 +1,143 @@
+Base URL
+http://localhost:5000
+
+Auth
+POST /api/auth/register
+{
+  "name": "Ravi",
+  "email": "ravi@gmail.com",
+  "password": "123456",
+  "role": "patient"
+}
+
+POST /api/auth/login
+{
+  "email": "ravi@gmail.com",
+  "password": "123456"
+}
+
+GET /api/auth/protected
+Authorization: Bearer <JWT_TOKEN>
+
+Symptoms
+POST /api/symptoms/
+Authorization: Bearer <JWT_TOKEN>
+{
+  "symptoms": "Fever, headache, body pain",
+  "duration": "2 days",
+  "age": 21,
+  "gender": "male",
+  "notes": "Mild nausea"
+}
+
+GET /api/symptoms/my
+Authorization: Bearer <JWT_TOKEN>
+
+GET /api/symptoms/all
+Authorization: Bearer <JWT_TOKEN>
+(doctor/admin only)
+
+AI
+GET /api/ai/status
+Authorization: Bearer <JWT_TOKEN>
+
+POST /api/ai/triage
+Authorization: Bearer <JWT_TOKEN>
+{
+  "symptoms": ["fever", "headache"],
+  "duration": "2 days",
+  "age": 21,
+  "gender": "male",
+  "medicalHistory": ["asthma"],
+  "currentMedications": ["inhaler"],
+  "vitals": {
+    "heartRate": 104,
+    "temperatureC": 38.2,
+    "spo2": 96,
+    "systolicBP": 122,
+    "diastolicBP": 80
+  }
+}
+
+GET /api/ai/triage/my
+Authorization: Bearer <JWT_TOKEN>
+
+GET /api/ai/triage/all
+Authorization: Bearer <JWT_TOKEN>
+(doctor/admin only)
+
+POST /api/ai/follow-up
+Authorization: Bearer <JWT_TOKEN>
+
+POST /api/ai/guidance
+Authorization: Bearer <JWT_TOKEN>
+
+Doctors and Availability
+GET /api/doctors
+Authorization: Bearer <JWT_TOKEN>
+Returns only active doctors with completed profiles.
+
+GET /api/doctors/available?start=2026-03-09T15:30:00.000Z&durationMinutes=30
+Authorization: Bearer <JWT_TOKEN>
+Checks doctor profile time window + booking conflicts.
+
+GET /api/doctors/me
+Authorization: Bearer <JWT_TOKEN>
+(doctor only)
+
+PUT /api/doctors/profile
+Authorization: Bearer <JWT_TOKEN>
+(doctor only)
+{
+  "fullName": "Dr. Rahul Sharma",
+  "specialization": "Cardiologist",
+  "experienceYears": 8,
+  "consultationFee": 1200,
+  "availableStart": "10:00",
+  "availableEnd": "14:00",
+  "clinicName": "City Heart Clinic"
+}
+Required for doctor onboarding completion:
+1) fullName
+2) specialization
+3) experienceYears
+4) consultationFee
+5) availableStart + availableEnd
+6) clinicName is optional
+
+Appointments and Prioritization
+POST /api/appointments/book
+Authorization: Bearer <JWT_TOKEN>
+(patient only)
+{
+  "doctorId": "<doctor_id>",
+  "slotStart": "2026-03-10T11:00:00.000Z",
+  "durationMinutes": 30,
+  "reason": "",
+  "triageReportId": "<optional_triage_report_id>"
+}
+If reason is empty and triageReportId is provided, selected triage summary is used as appointment reason.
+
+GET /api/appointments/my
+Authorization: Bearer <JWT_TOKEN>
+(patient only)
+
+GET /api/appointments/doctor
+Authorization: Bearer <JWT_TOKEN>
+(doctor only)
+
+GET /api/appointments/queue
+Authorization: Bearer <JWT_TOKEN>
+(doctor/admin only)
+Sorted by priorityScore desc, then earliest slot.
+
+PATCH /api/appointments/:appointmentId/status
+Authorization: Bearer <JWT_TOKEN>
+(doctor/admin only)
+{
+  "status": "confirmed"
+}
+
+Environment
+Create server/.env from .env.example.
+Leave AI_API_KEY empty for now if needed.
