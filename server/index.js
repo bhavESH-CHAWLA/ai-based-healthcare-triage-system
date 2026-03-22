@@ -15,6 +15,8 @@ const app = express();
 
 connectDB().then(() => {
   seedAdminUser();
+}).catch((error) => {
+  console.error("Database initialization failed:", error.message);
 });
 
 app.use(cors());
